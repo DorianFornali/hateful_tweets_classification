@@ -1,0 +1,5 @@
+The apprenticeship takes place at AMADEUS, a company that provides airlines with a range of solutions for selling and booking airline tickets online.
+As part of this project, I'm tasked with adding a functionality that will allow services and insurances to be added to an airline ticket when displaying the possible flights for a given air journey. This would represent a commercial asset for Amadeus, which could offer a new functionality to airlines using its services, but also a strength for flight insurance companies.
+The major difficulty will be to design a functional system which, as we will see in more detail, will call on several Amadeus components and to manage to implement this in the current flow without disrupting it too much.
+My role is initially to find a partial solution to this problem and to draw up a proof of concept (POC) to demonstrate the feasibility of the project.
+This report will therefore present my thoughts, problems, and solutions in this context.

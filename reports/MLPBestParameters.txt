@@ -1,0 +1,1 @@
+{'model__hidden_layer_sizes': (20,), 'model__max_iter': 150, 'tfidf__max_features': 2400}
