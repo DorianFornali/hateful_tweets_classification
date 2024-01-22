@@ -82,7 +82,6 @@ if __name__ == '__main__':
     TRAINING = False
     EMBEDDING = False
 
-
     """
     nltk.download('punkt')
     nltk.download('wordnet')
