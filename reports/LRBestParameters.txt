@@ -1,1 +1,1 @@
-{'model__C': 10, 'model__max_iter': 500, 'tfidf__max_features': 15000}
+{'model__C': 1, 'model__max_iter': 500, 'tfidf__max_features': 5000}

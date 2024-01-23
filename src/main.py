@@ -82,6 +82,9 @@ if __name__ == '__main__':
     TRAINING = False
     EMBEDDING = False
 
+    with open("src/train_test_splitting.py") as file:
+        exec(file.read())
+
     """
     nltk.download('punkt')
     nltk.download('wordnet')
@@ -121,6 +124,7 @@ if __name__ == '__main__':
         # We will now use the model to embed the tweets
         embedTweet(df_train, embeddingModel)
         embedTweet(df_test, embeddingModel)
+        to_csv(df_train, "train_embedded")
         if VERBOSE:
             print("Successfully embedded tweets")
         # We test on a single tweet
@@ -166,32 +170,28 @@ if __name__ == '__main__':
     }
     MLP_model = MLPClassifier(max_iter=1000, random_state=RANDOM_STATE, solver="adam")
 
-    if(not EMBEDDING):
-        # We will use pipelines to combine the TF-IDF vectorizer and the model
-        LR_pipeline = Pipeline([
-            ('tfidf', TfidfVectorizer()),
-            ('model', LR_model)
-        ])
-        LR_grid = GridSearchCV(LR_pipeline, logistic_regression_params, cv=3, n_jobs=-1)
+    # We will use pipelines to combine the TF-IDF vectorizer and the model
+    LR_pipeline = Pipeline([
+        ('tfidf', TfidfVectorizer()),
+        ('model', LR_model)
+    ])
+    LR_grid = GridSearchCV(LR_pipeline, logistic_regression_params, cv=3, n_jobs=-1)
 
-        RF_pipeline = Pipeline([
-            ('tfidf', TfidfVectorizer()),
-            ('model', RF_model)
-        ])
-        RF_grid = GridSearchCV(RF_pipeline, random_forest_params, cv=3, n_jobs=-1)
+    RF_pipeline = Pipeline([
+        ('tfidf', TfidfVectorizer()),
+        ('model', RF_model)
+    ])
+    RF_grid = GridSearchCV(RF_pipeline, random_forest_params, cv=3, n_jobs=-1)
 
-        MLP_pipeline = Pipeline([
-            ('tfidf', TfidfVectorizer()),
-            ('model', MLP_model)
-        ])
-        MLP_grid = GridSearchCV(MLP_pipeline, mlp_params, cv=3, n_jobs=-1)
-    else:
-        # With embedded data we will not use pipelines
-        LR_grid = GridSearchCV(LR_model, logistic_regression_params, cv=3, n_jobs=-1)
-        RF_grid = GridSearchCV(RF_model, random_forest_params, cv=3, n_jobs=-1)
-        MLP_grid = GridSearchCV(MLP_model, mlp_params, cv=3, n_jobs=-1)
+    MLP_pipeline = Pipeline([
+        ('tfidf', TfidfVectorizer()),
+        ('model', MLP_model)
+    ])
+    MLP_grid = GridSearchCV(MLP_pipeline, mlp_params, cv=3, n_jobs=-1)
+
 
     if TRAINING:
+
         # We will fit the models to the training data
         if VERBOSE:
             print("\nFitting models to training data...")
@@ -303,7 +303,7 @@ if __name__ == '__main__':
 
     if("-i" in args):
         while True:
-            text = input("Enter some text: ")
+            text = input("Enter a tweet: ")
             text = preprocess_tweet(text)
 
             if EMBEDDING:
