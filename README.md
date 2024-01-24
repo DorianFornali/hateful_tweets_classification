@@ -1,6 +1,6 @@
 # Universitary project in the first year of Master at Université Cote d'Azur
 
-The goal was to implement some machine learning models that could do some classification on tweets, to detect potentially hateful ones.
+The goal was to implement some machine learning models that could do classification on tweets, to detect potentially hateful ones.
 This is done using a dataset extracted from https://github.com/t-davidson/hate-speech-and-offensive-language
 
 ## USAGE
