@@ -39,7 +39,7 @@ class_counts = df['class'].value_counts()
 
 print("Class distribution in the original dataset:")
 print(class_counts)
-print("Class distribution in the oversampled dataset:")
+print("Class distribution in the trained dataset after split:")
 print(df_train_resampled['class'].value_counts())
 
 

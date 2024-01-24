@@ -81,7 +81,31 @@ if __name__ == '__main__':
     VERBOSE = False
     TRAINING = False
     EMBEDDING = False
+    INTERACTIVE = False
 
+    args = sys.argv[1:]
+    if "-v" in args:
+        VERBOSE = True
+    if "-t" in args:
+        TRAINING = True
+    if "-e" in args:
+        EMBEDDING = True
+    if "-i" in args:
+        INTERACTIVE = True
+
+    if(len(args) == 0):
+        # No args, printing out basic info
+        print("Usage: python main.py [options]")
+        print("Options:")
+        print("-v: verbose")
+        print("-t: training | Trains the models on the data prepared by train_test_splitting.py")
+        print("-e: embedding | Embeds the tweets using word embeddings, NOT WORKING")
+        print("-i: interactive | Allows the user to enter tweets and get predictions")
+        print("Example: python main.py -v -i")
+        exit(0)
+
+    # The train test splitting script simply uses the train_test_split function from sklearn
+    # and saves the training and testing data to two separate files to ease the process
     with open("src/train_test_splitting.py") as file:
         exec(file.read())
 
@@ -91,22 +115,27 @@ if __name__ == '__main__':
     nltk.download('averaged_perceptron_tagger')
     """
 
-    args = sys.argv[1:]
-    if "-v" in args:
-        VERBOSE = True
-    if "-t" in args:
-        TRAINING = True
-    if "-e" in args:
-        EMBEDDING = True
+
+    if VERBOSE:
+        print("Loading data...")
 
     # We load the training and testing data
     df_train = pd.read_csv('data/train_resampled_file.csv')
     df_test = pd.read_csv('data/test_file.csv')
 
+    if VERBOSE:
+        print("Successfully loaded data")
+
     # We preprocess it
+
+    if VERBOSE:
+        print("Preprocessing data...")
 
     df_train['tweet'] = df_train['tweet'].apply(preprocess_tweet)
     df_test['tweet'] = df_test['tweet'].apply(preprocess_tweet)
+
+    if VERBOSE:
+        print("Successfully preprocessed data")
 
     if(EMBEDDING):
         # Here we will embed the tweets using word embeddings
@@ -301,7 +330,8 @@ if __name__ == '__main__':
 
     # We will now predict the class of an input
 
-    if("-i" in args):
+    if INTERACTIVE:
+        # Interactive means we give the user the possibility to enter multiples tweets and get predictions
         while True:
             text = input("Enter a tweet: ")
             text = preprocess_tweet(text)
@@ -318,3 +348,4 @@ if __name__ == '__main__':
             print("Predicted class with RF:", prediction)
             prediction = MLP_grid.predict([text])
             print("Predicted class with MLP:", prediction)
+            print("Ctrl+C to exit")
